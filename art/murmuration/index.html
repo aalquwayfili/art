@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Starlings over Olaya</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1c1430; }
+  canvas { display: block; width: 100vw; height: 100vh; image-rendering: pixelated; }
+  #nogpu {
+    position: fixed; inset: 0; display: none; place-items: center; background: #14161a;
+    color: #b9b3a6; font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="nogpu">This piece needs WebGPU: Chrome, Edge, or Safari 26+</div>
+<script type="module" src="main.js"></script>
+</body>
+</html>

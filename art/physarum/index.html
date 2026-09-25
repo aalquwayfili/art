@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Physarum, after the wells</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #efe7d6; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #label {
+    position: fixed; left: 20px; bottom: 16px; margin: 0;
+    font: 11px/1.5 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .08em;
+    color: #0078bf; mix-blend-mode: multiply; text-transform: uppercase;
+  }
+  #nogpu {
+    position: fixed; inset: 0; display: none; place-items: center; background: #14161a;
+    color: #b9b3a6; font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace;
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<p id="label"></p>
+<div id="nogpu">This piece needs WebGPU: Chrome, Edge, or Safari 26+</div>
+<script type="module" src="main.js"></script>
+</body>
+</html>
