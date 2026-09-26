@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wyrm</title>
+<link rel="icon" href="data:,">
+<style>
+  html, body { margin: 0; height: 100%; background: #2a2c33; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #note { position: fixed; inset: 0; display: none; place-items: center; color: #cfc3b0;
+          font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace; text-align: center; padding: 16px; }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<p id="note">This piece needs WebGPU: Chrome, Edge, or Safari 26+</p>
+<script type="module" src="main.js"></script>
+</body>
+</html>

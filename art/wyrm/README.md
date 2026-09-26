@@ -1,0 +1,17 @@
+# Wyrm
+
+[![preview](preview.webp)](https://aalquwayfili.com/art/wyrm/)
+
+Dawn above a sea of cloud, with peaks standing out of it. A dragon glides in a slow banking turn with the low sun behind it, its wing membranes lit through. Mist drifts past, swallows part of it for a while, and lets it go. Every 12 seconds it gives one slow wingbeat, then glides again.
+
+[View it live](https://aalquwayfili.com/art/wyrm/) (needs WebGPU: Chrome, Edge, or Safari 26+).
+
+How it works:
+
+- **The clouds** are carved from a tileable 3D noise texture (128³, baked once by a compute pass): Perlin noise remapped by Worley noise in one channel, three octaves of Worley noise ([Worley 1996](https://doi.org/10.1145/237170.237267)) in the others. The density model follows [Schneider and Vos 2015](https://www.guerrilla-games.com/read/the-real-time-volumetric-cloudscapes-of-horizon-zero-dawn): the shape is thresholded by a coverage value and a height profile, then its edges are eroded with finer noise. There are two layers, a deep sea of cloud far below and a thin band of mist around the dragon. Both drift by exactly one noise tile per loop, so the loop has no seam.
+- **Light in the clouds.** Each pixel marches through both layers. At every sample, two taps toward the sun give the optical depth, and light falls off with Beer–Lambert. The phase function is two Henyey–Greenstein lobes ([Henyey and Greenstein 1941](https://doi.org/10.1086/144246)), which brightens the edges facing the sun. Multiple scattering is approximated by summing a few octaves with weaker extinction and a flatter phase, as in [Wrenninge et al. 2013](https://doi.org/10.1145/2504459.2504518). Distance fades everything toward the colour of the horizon.
+- **The dragon** is a signed distance field posed on the CPU every frame. A spine of 32 points carries a travelling wave from neck to tail. Round cones blended with a smooth minimum make the body, head, horns, dorsal spines and tucked legs, and the finger bones of the wings. Each wing membrane is a set of thin triangles stretched between the fingers and the flank, and a circle cuts a scallop into each trailing edge. The distance functions are from [Quilez](https://iquilezles.org/articles/distfunctions/). The field is sphere traced ([Hart 1996](https://doi.org/10.1007/s003710050084)) inside its bounding sphere, skipping any group of parts whose own bounding sphere is farther away than what is already found. A near miss still covers part of a pixel, which smooths the silhouette. It is an original design, not taken from any film or game.
+- **Shading.** The body is dark, with a rim of light where its surface turns away from view against the sun. The membranes let the sun through: warm red, strongest near the sun, dimmer over the bones and where the skin is thicker. The sun reaching the dragon is dimmed by the mist between them.
+- **Light shafts.** The scene pass also records how much open sky near the sun each pixel sees. The present pass blurs that mask radially toward the sun ([Mitchell 2007](https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-13-volumetric-light-scattering-post-process)), so the wings and the mist cast shafts. It then applies exposure, a soft contrast curve, slight desaturation, a vignette and fine grain.
+
+Options: `?quality=low` for a 64³ noise, a picture 300 rows high instead of 540, and fewer steps. Software adapters use it by default, except for `?t` stills. `?t=<seconds>` renders one frame at that time. The loop is 24 seconds long.
